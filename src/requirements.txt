@@ -1,0 +1,6 @@
+aiohttp
+gunicorn
+aiohttp_cors
+cryptography
+aiohttp_sse
+sockjs
