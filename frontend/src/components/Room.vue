@@ -1,6 +1,34 @@
 <template>
-  <div id="app">
-    <router-view/>
+    <div id="room" >
+    <input type="text" v-model="room_name" placeholder="Digite o nome da sala" /> <router-link :to="'/'+room_name">Entrar</router-link>
+    <table>
+     <thead>
+       <tr>
+         <th>
+           Room
+         </th>
+         <th>
+           Players
+         </th>
+         <th>
+
+         </th>
+       </tr>
+     </thead>
+     <tbody>
+       <tr v-for="(room, index) in rooms">
+         <td >
+           {{index}}
+         </td>
+         <td >
+           Users: {{room.sessions.length}}
+         </td>
+         <td >
+           <router-link :to="'/'+index">Join</router-link>
+         </td>
+       </tr>
+     </tbody>
+   </table>
   </div>
 </template>
 
@@ -29,16 +57,11 @@ export default {
       positionInfo: null,
       player: 'white',
       socket: null,
-      uuid: null
+      rooms: null,
+      room_name:''
     }
   },
   methods: {
-    uuidv4() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-      return v.toString(16);
-    });
-    },
     showInfo(data) {
         let self = this
         this.positionInfo = data
@@ -68,26 +91,12 @@ export default {
      let self = this
      this.socket = new SockJS('/ws');
      this.socket.onopen = function() {
-     console.log('connected');
-          var t=setInterval(function() { self.conn.send(
-            JSON.stringify({
-              type: "keepalive",
-              peer_id: self.uuid
-            })
-          );
-        },1000);
-          self.conn.send(
-            JSON.stringify({
-              type: "new_peer",
-              peer: self.uuid,
-              room: self.room
-            })
-          );
+     console.log('open');
+     self.socket.send(JSON.stringify({'type': 'get_rooms'}))
      };
 
      self.socket.onmessage = function(e) {
          let msg_obj;
-          console.log('ao')
           console.log(e.data)
           console.log(typeof e.data)
           if (typeof e.data == 'string') {
@@ -95,9 +104,10 @@ export default {
           } else {
             msg_obj = e.data
           }
+          self.rooms = msg_obj
          console.log(msg_obj)
          //let obj = JSON.parse(e.data)
-         self.currentFen = e.data.fen
+         console.log(msg_obj)
          //self.socket.close();
      };
 
