@@ -65,46 +65,6 @@ export default {
 
   },
   mounted () {
-     let self = this
-     this.socket = new SockJS('/ws');
-     this.socket.onopen = function() {
-     console.log('connected');
-          var t=setInterval(function() { self.conn.send(
-            JSON.stringify({
-              type: "keepalive",
-              peer_id: self.uuid
-            })
-          );
-        },1000);
-          self.conn.send(
-            JSON.stringify({
-              type: "new_peer",
-              peer: self.uuid,
-              room: self.room
-            })
-          );
-     };
-
-     self.socket.onmessage = function(e) {
-         let msg_obj;
-          console.log('ao')
-          console.log(e.data)
-          console.log(typeof e.data)
-          if (typeof e.data == 'string') {
-            msg_obj = JSON.parse(e.data)
-          } else {
-            msg_obj = e.data
-          }
-         console.log(msg_obj)
-         //let obj = JSON.parse(e.data)
-         self.currentFen = e.data.fen
-         //self.socket.close();
-     };
-
-     self.socket.onclose = function() {
-         self.socket = new SockJS('/ws');
-         console.log('close');
-     };
 
   }
 }
