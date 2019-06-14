@@ -1,5 +1,5 @@
 <template>
-  <div id="game" style="height:100%;max-height:100vh;">
+  <div id="game">
     <div id="board" >
     <div id="table" >
     <span v-if="player.role == 'watcher'">You've joined as watcher</span>
@@ -10,7 +10,7 @@
     <chessboard class="chessboard" style="pointer-events: none;" v-if="player.role == 'watcher'" :fen="currentFen" ></chessboard>
     </div>
     <div id="chat-box" v-if="player.role !== 'watcher'">
-    <textarea class="msg_area" v-model="msg" rows="4" cols="30"></textarea><br /><button class="btn" @click="sendMessage()">Send</button>
+    <textarea class="msg_area" v-model="msg" rows="4" cols="30" placeholder="Digite a mensagem"></textarea><br /><button class="btn" @click="sendMessage()">Send</button>
     </div>
     <div class="message-board" style="max-height:100px; overflow-y:scroll;">
       <div v-for="message in messages">
@@ -195,6 +195,8 @@ margin: auto;
 float: left;
 }
 .message-board {
+  border: 1px solid #03A9F4;
+
   position: relative;
   max-height: 200px;
   overflow-y: scroll;
@@ -206,10 +208,11 @@ float: left;
   float: left;
 }
 .msg_area {
-width: 100%;
+width: 96%;
 margin: auto;
-  background: #03A9F4;
-  color:#fff;
+border: 1px solid #03A9F4;
+  background: #fff;
+  color:#333;
 }
 
 .me {
@@ -218,6 +221,9 @@ margin: auto;
   float:right;
   right:0;
   padding:2px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 4px;
 }
 
 .remote {
@@ -226,11 +232,13 @@ margin: auto;
   color: #fff;
   float:left;
   padding:2px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 4px;
 }
 
 .sys_message {
-  background: red;
-  color:#fff;
+  color:red;
   margin: auto;
   width: 100%;
 

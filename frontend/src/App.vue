@@ -71,6 +71,11 @@ export default {
 }
 </script>
 <style>
+body, html {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #333;
+}
+
 .btn {
   background-color: white;
   color: #333;
@@ -89,5 +94,21 @@ export default {
 .btn:hover {
   background-color: #008CBA !important;
   color: white  !important;;
+}
+
+::-webkit-scrollbar {
+width: 12px;
+height: 12px;
+}
+
+::-webkit-scrollbar-track {
+box-shadow: inset 0 0 10px #03a9f4;
+border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+border-radius: 10px;
+background: #03a9f4;
+box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
 }
 </style>
