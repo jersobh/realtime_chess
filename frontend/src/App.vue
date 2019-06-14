@@ -74,7 +74,6 @@ export default {
   background-color: white;
   color: #333;
   border: 2px solid #008CBA;
-  border: none;
   padding: 16px 32px;
   text-align: center;
   text-decoration: none;
