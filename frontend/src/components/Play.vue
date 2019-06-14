@@ -2,18 +2,18 @@
   <div id="game" style="height:100%;max-height:100vh;">
     <div id="board" >
     <div id="table" >
-    <span v-if="player.role">You've joined as {{player.role}}</span><br />
+    <span v-if="player.role == 'watcher'">You've joined as watcher</span>
     <p v-if="positionInfo && positionInfo.turn !== player.role">Now it's <span style="color">{{positionInfo.turn}}'s </span> turn</p>
     <p v-if="positionInfo && positionInfo.turn == player.role">It's <span style="color: #FF0000;">your</span> turn</p>
-    <chessboard v-if="player.role == 'white'" @onMove="showInfo" :fen="currentFen" :onPromotion="promote"></chessboard>
-    <chessboard v-if="player.role == 'black'" orientation="black" @onMove="showInfo" :fen="currentFen" :onPromotion="promote"  ></chessboard>
-    <chessboard v-if="player.role == 'watcher'" :fen="currentFen" style="pointer-events: none"></chessboard>
+    <chessboard class="chessboard" v-if="player.role == 'white'" @onMove="showInfo" :fen="currentFen" :onPromotion="promote"></chessboard>
+    <chessboard class="chessboard" v-if="player.role == 'black'" orientation="black" @onMove="showInfo" :fen="currentFen" :onPromotion="promote"  ></chessboard>
+    <chessboard class="chessboard" style="pointer-events: none;" v-if="player.role == 'watcher'" :fen="currentFen" ></chessboard>
     </div>
-    <div id="chat-box">
+    <div id="chat-box" v-if="player.role !== 'watcher'">
     <textarea class="msg_area" v-model="msg" rows="4" cols="30"></textarea><br /><button class="btn" @click="sendMessage()">Send</button>
     </div>
     <div class="message-board" style="max-height:100px; overflow-y:scroll;">
-      <div v-for="message in messages" track-by="id">
+      <div v-for="message in messages">
         <span v-if="message.type == 'player_message' && message.player == player.id" class="me">
         {{message.time}}: {{message.msg}}
         </span>
@@ -59,7 +59,7 @@ export default {
       msg: '',
       messages: [],
       socket: null,
-      ws_server: '/ws'
+      ws_server: 'http://localhost:8000/ws'
     }
   },
   methods: {
@@ -182,40 +182,32 @@ export default {
 }
 </script>
 <style>
-@media only screen and (max-width: 800px) {
-  #board {
-      position: relative; /* or absolute */
-      height:70%;
-      max-height: 70vh;
-      padding: 2%;
-      /*transform: translate(-50%, -50%);*/
-  }
-}
 
-@media only screen and (min-width: 800px) {
   #board {
-      height:70%;
-      max-height: 70vh;
-      position: absolute;; /* or absolute */
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+width: 80%;
+margin: auto;
   }
-}
+
 #chat-box {
-  height:15%;
-  max-height: 15vh;
+  height: 15%;
+min-width: 30%;
+margin: auto;
+float: left;
 }
 .message-board {
   position: relative;
   max-height: 200px;
   overflow-y: scroll;
   padding: 2%;
-  height:15%;
-  max-height: 15vh;
+  height: 15%;
+  width: auto;
+  margin: auto;
+  min-width: 60%;
+  float: left;
 }
 .msg_area {
-  width:100%;
+width: 100%;
+margin: auto;
   background: #03A9F4;
   color:#fff;
 }
@@ -225,7 +217,7 @@ export default {
   color: #fff;
   float:right;
   right:0;
-  padding:2%;
+  padding:2px;
 }
 
 .remote {
@@ -233,7 +225,7 @@ export default {
   left:0;
   color: #fff;
   float:left;
-  padding:2%;
+  padding:2px;
 }
 
 .sys_message {
@@ -242,5 +234,32 @@ export default {
   margin: auto;
   width: 100%;
 
+}
+
+.chessboard {
+  width: 320px;
+  height: 340px;
+  margin: 0 auto;
+}
+
+@media only screen and (max-width: 800px) {
+  #chat-box {
+    height: 15%;
+  width: 98%;
+  margin: auto;
+  float: left;
+  }
+
+  .message-board {
+    position: relative;
+    max-height: 200px;
+    overflow-y: scroll;
+    padding: 2%;
+    height: 15%;
+    width: 100%;
+    margin: auto;
+    min-width: 50%;
+    float: left;
+  }
 }
 </style>

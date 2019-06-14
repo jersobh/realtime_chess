@@ -75,7 +75,7 @@ export default {
   background-color: white;
   color: #333;
   border: 2px solid #008CBA;
-  padding: 16px 32px;
+  padding: 10px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
