@@ -1,5 +1,5 @@
 <template>
-  <div id="game">
+  <div id="game" style="height:100%;max-height:100vh;">
     <div id="board" >
     <div id="table" >
     <span v-if="player.role">You've joined as {{player.role}}</span><br />
@@ -9,7 +9,9 @@
     <chessboard v-if="player.role == 'black'" orientation="black" @onMove="showInfo" :fen="currentFen" :onPromotion="promote"  ></chessboard>
     <chessboard v-if="player.role == 'watcher'" :fen="currentFen" style="pointer-events: none"></chessboard>
     </div>
+    <div id="chat-box">
     <textarea class="msg_area" v-model="msg" rows="4" cols="30"></textarea><br /><button class="btn" @click="sendMessage()">Send</button>
+    </div>
     <div class="message-board" style="max-height:100px; overflow-y:scroll;">
       <div v-for="message in messages" track-by="id">
         <span v-if="message.type == 'player_message' && message.player == player.id" class="me">
@@ -183,7 +185,8 @@ export default {
 @media only screen and (max-width: 800px) {
   #board {
       position: relative; /* or absolute */
-      height:80vh;
+      height:70%;
+      max-height: 70vh;
       padding: 2%;
       /*transform: translate(-50%, -50%);*/
   }
@@ -191,18 +194,25 @@ export default {
 
 @media only screen and (min-width: 800px) {
   #board {
+      height:70%;
+      max-height: 70vh;
       position: absolute;; /* or absolute */
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
   }
 }
-
+#chat-box {
+  height:15%;
+  max-height: 15vh;
+}
 .message-board {
   position: relative;
   max-height: 200px;
   overflow-y: scroll;
   padding: 2%;
+  height:15%;
+  max-height: 15vh;
 }
 .msg_area {
   width:100%;
