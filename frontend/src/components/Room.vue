@@ -1,14 +1,14 @@
 <template>
     <div id="room" >
-    <input type="text" v-model="room_name" placeholder="Digite o nome da sala" /> <router-link :to="'/'+room_name">Entrar</router-link>
-    <table>
+    <input type="text" v-model="room_name" placeholder="Digite o nome da sala"  class="btn" /> <router-link :to="'/'+room_name"  class="btn">Entrar</router-link>
+    <table class="rooms_table">
      <thead>
        <tr>
          <th>
            Room
          </th>
          <th>
-           Players
+           Users
          </th>
          <th>
 
@@ -21,10 +21,10 @@
            {{index}}
          </td>
          <td >
-           Users: {{room.sessions.length}}
+           {{room.sessions.length}}
          </td>
          <td >
-           <router-link :to="'/'+index">Join</router-link>
+           <router-link :to="'/'+index" class="btn">Join</router-link>
          </td>
        </tr>
      </tbody>
@@ -91,8 +91,13 @@ export default {
      let self = this
      this.socket = new SockJS('/ws');
      this.socket.onopen = function() {
-     console.log('open');
-     self.socket.send(JSON.stringify({'type': 'get_rooms'}))
+     console.log('connected');
+          var t=setInterval(function() { self.socket.send(
+            JSON.stringify({
+              type: "get_rooms",
+            })
+          );
+        },2000);
      };
 
      self.socket.onmessage = function(e) {
@@ -119,3 +124,25 @@ export default {
   }
 }
 </script>
+<style>
+table.rooms_table {
+  width: 100%;
+  background-color: #FFFFFF;
+  border-collapse: collapse;
+  border-width: 2px;
+  border-color: #222D42;
+  border-style: solid;
+  color: #333;
+}
+
+table.rooms_table td, table.rooms_table th {
+  border-width: 2px;
+  border-color: #222D42;
+  border-style: solid;
+  padding: 5px;
+}
+
+table.rooms_table thead {
+  background-color: #7EA8F8;
+}
+</style>

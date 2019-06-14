@@ -83,7 +83,6 @@ export default {
           var t=setInterval(function() { self.socket.send(
             JSON.stringify({
               type: "keepalive",
-              uuid: self.uuid
             })
           );
         },1000);

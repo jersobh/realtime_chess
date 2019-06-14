@@ -109,3 +109,25 @@ export default {
   }
 }
 </script>
+<style>
+.btn {
+  background-color: white;
+  color: #333;
+  border: 2px solid #008CBA;
+  border: none;
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #008CBA !important;
+  color: white  !important;;
+}
+</style>
