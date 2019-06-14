@@ -66,6 +66,8 @@ async def ws_poll(msg, session):
         rooms[room_name]['sessions'].remove(session)
         del rooms[room_name][session.id]
         del users[session.id]
+        if len(rooms[room_name]['sessions']) == 0:
+            del rooms[room_name]
         session.manager.broadcast(json.dumps({'type': 'user_left', 'id': session.id}))
         session.manager.broadcast(rooms)
 
