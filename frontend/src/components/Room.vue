@@ -58,7 +58,8 @@ export default {
       player: 'white',
       socket: null,
       rooms: null,
-      room_name:''
+      room_name:'',
+      ws_server: '/ws'
     }
   },
   methods: {
@@ -89,7 +90,7 @@ export default {
   },
   mounted () {
      let self = this
-     this.socket = new SockJS('/ws');
+     this.socket = new SockJS(this.ws_server);
      this.socket.onopen = function() {
      console.log('connected');
           var t=setInterval(function() { self.socket.send(
@@ -117,7 +118,7 @@ export default {
      };
 
      self.socket.onclose = function() {
-         self.socket = new SockJS('/ws');
+         self.socket = new SockJS(this.ws_server);
          console.log('close');
      };
 

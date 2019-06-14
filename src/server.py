@@ -11,8 +11,7 @@ users = {}
 
 async def ws_poll(msg, session):
     if msg.type == sockjs.MSG_OPEN:
-        print('new user')
-        print(session.id)
+        print('new session')
     elif msg.type == sockjs.MSG_MESSAGE:
         print(msg.data)
         data = json.loads(msg.data)
@@ -48,10 +47,20 @@ async def ws_poll(msg, session):
 
             rooms[room_name][session.id]['ws'].send(json.dumps({'type': 'set_player', 'id': rooms[room_name][session.id]['id'], 'role': rooms[room_name][session.id]['role']}))
 
+            for user in rooms[room_name]['sessions']:
+                    user.send(json.dumps({'type': 'sys_message', 'text': f'{users[session.id]["role"]} has joined the room'}))
+
+
+
         if data['type'] == 'new_move':
             room_name = data['room']
             for user in rooms[room_name]['sessions']:
                     user.send(json.dumps({'type': 'update', 'fen': data['fen']}))
+
+        if data['type'] == 'new_message':
+            room_name = data['room']
+            for user in rooms[room_name]['sessions']:
+                    user.send(json.dumps({'type': 'message', 'player_id': data['player_id'], 'time': data['time'], 'text': data['msg']}))
 
         if data['type'] == 'get_rooms':
             session.manager.broadcast(rooms)
