@@ -59,7 +59,7 @@ export default {
       msg: '',
       messages: [],
       socket: null,
-      ws_server: 'http://localhost:8000/ws'
+      ws_server: '/ws'
     }
   },
   methods: {
