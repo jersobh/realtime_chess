@@ -1,6 +1,10 @@
-# Realtime App
+# Realtime online chess app
 
-> Python + VueJS realtime app
+> Python + VueJS (vue-chessboard) realtime chess app using aiohttp and sockjs. Mobile ready! (responsive)
+
+## Screenshots
+![Screenshot](https://raw.githubusercontent.com/jersobh/realtime_chess/master/screenshots/1.jpeg)
+![Screenshot](https://raw.githubusercontent.com/jersobh/realtime_chess/master/screenshots/2.jpeg)
 
 ## Build Setup
 
@@ -8,6 +12,3 @@
 $ docker-compose build
 $ docker-compose up
 ```
-
-Then navigate to:
-[SSE example](http://localhost/sse_poll)  or [Websocket example](http://localhost/ws_poll)
