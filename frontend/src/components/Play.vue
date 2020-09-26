@@ -13,7 +13,7 @@
     <textarea class="msg_area" v-model="msg" rows="4" cols="30" placeholder="Digite a mensagem"></textarea><br /><button class="btn" @click="sendMessage()">Send</button>
     </div>
     <div class="message-board" style="max-height:100px; overflow-y:scroll;">
-      <div v-for="message in messages">
+      <div v-for="message in messages" :key="message.player">
         <span v-if="message.type == 'player_message' && message.player == player.id" class="me">
         {{message.time}}: {{message.msg}}
         </span>
@@ -39,16 +39,6 @@ export default {
   name: 'app',
   components: {
     chessboard
-  },
-  watch: {
-    currentFen: function (newVal, oldVal) {
-      let self = this
-      console.log('new move')
-      console.log(self.positionInfo)
-
-// To re-enable:
-
-    }
   },
   data () {
     return {
@@ -90,12 +80,9 @@ export default {
         }
 
         this.positionInfo = data
-        console.log(self.positionInfo)
         if(self.positionInfo.turn == self.player.role) {
-            console.log('enable click')
                document.getElementById("table").style.pointerEvents = "auto";
           } else {
-            console.log('disable click')
                document.getElementById("table").style.pointerEvents = "none";
           }
 
@@ -124,8 +111,7 @@ export default {
      let self = this
      this.socket = new SockJS(this.ws_server, 'websocket', {debug: true});
      this.socket.onopen = function() {
-     console.log('connected');
-          var t=setInterval(function() { self.socket.send(
+          setInterval(function() { self.socket.send(
             JSON.stringify({
               type: "keepalive",
             })
@@ -141,33 +127,23 @@ export default {
 
      self.socket.onmessage = function(e) {
          let msg_obj;
-          console.log('ao')
-          console.log(e.data)
-          console.log(typeof e.data)
           if (typeof e.data == 'string') {
             msg_obj = JSON.parse(e.data)
           } else {
             msg_obj = e.data
           }
-         console.log(msg_obj.type)
-         //let obj = JSON.parse(e.data)
          if(msg_obj.type == 'set_player'){
-           console.log('setting color')
            self.player = msg_obj
-           console.log(self.player)
         }
         if(msg_obj.type == 'update'){
-          console.log('new move')
          self.currentFen = msg_obj.fen
        }
 
        if(msg_obj.type == 'sys_message'){
-         console.log('new sys message')
          self.messages.unshift({'type': 'sys_message', 'msg': msg_obj.text })
        }
 
        if(msg_obj.type == 'message'){
-         console.log('new message')
          self.messages.unshift({ 'type': 'player_message', 'player': msg_obj.player_id, 'time': msg_obj.time, 'msg': msg_obj.text })
        }
          //self.socket.close();
@@ -175,7 +151,6 @@ export default {
 
      self.socket.onclose = function() {
          self.socket = new SockJS(this.ws_server, 'websocket', {debug: true});
-         console.log('close');
      };
 
   }
